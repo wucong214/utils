@@ -36,6 +36,10 @@ function paging(data, size) {
  * @param digits
  * @param space
  * @return {string}
+ * @example:
+ *   formatBytes(123456789) => 117.74 MB
+ *   formatBytes(123456789, 1) => 117.7 MB
+ *   formatBytes(123456789, 1, false) => 117.7MB
  */
 function formatBytes(bytes, digits = 2, space = true) {
     const unit = 1024;
@@ -54,8 +58,8 @@ function formatBytes(bytes, digits = 2, space = true) {
  * @return {string}
  * @example:
  *   hexToRGB('#abcdef') => rgb(171, 205, 239)
- *   hexToRGB('#abcdef80') => rgb(171, 205, 239, 0.5)
- *   hexToRGB('#abcdef80', 2) => rgb(171, 205, 239, 0.50)
+ *   hexToRGB('#abcdef80') => rgba(171, 205, 239, 0.5)
+ *   hexToRGB('#abcdef80', 2) => rgba(171, 205, 239, 0.50)
  */
 function hexToRGB(hex, toFixed = 1) {
     const h = hex.replace(/^\#/, '');
@@ -66,7 +70,14 @@ function hexToRGB(hex, toFixed = 1) {
     const g = (h2 & (alpha ? 0x00ff0000 : 0x00ff00)) >>> (alpha ? 16 : 8);
     const b = (h2 & (alpha ? 0x0000ff00 : 0x0000ff)) >>> (alpha ? 8 : 0);
     const a = alpha ? ((h2 & 0x000000ff) / 255).toFixed(toFixed) : '';
-    const rgba = (alpha ? [r, g, b, a] : [r, g, b]).join(', ');
+    const rgba = [r, g, b].concat(alpha ? a : []).join(', ');
     const str = `rgb${alpha ? 'a' : ''}(${rgba})`;
     return str;
+}
+
+export default {
+    random,
+    paging,
+    formatBytes,
+    hexToRGB
 }
